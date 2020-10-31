@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Item List</title>
+  <title>WHAT'S FOR DINNER</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div id="app"></div>
+<div id="app">app not rendering</div>
 <script type="text/javascript" src="bundle.js"></script>
+<script>
+  if('geolocation' in navigator) {
+  console.log('yes')
+} else {
+  console.log('no')
+}
+</script>
 </body>
 </html>

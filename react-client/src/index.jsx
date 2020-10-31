@@ -1,34 +1,43 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import $ from 'jquery';
-import List from './components/List.jsx';
+import axios from 'axios';
+import Header from './components/Header.jsx';
+import Container from './components/Container.jsx'
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      items: []
+    this.state = {
+      latitude: '',
+      longitude: '',
+      restaurants: []
     }
   }
 
   componentDidMount() {
-    $.ajax({
-      url: '/items', 
-      success: (data) => {
-        this.setState({
-          items: data
-        })
-      },
-      error: (err) => {
-        console.log('err', err);
-      }
-    });
+    navigator.geolocation.getCurrentPosition((position) => {
+    this.setState({
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude
+    }, () => {
+      axios.get('/api/restaurants', {
+        params: {
+          latitude: this.state.latitude,
+          longitude: this.state.longitude
+        }
+      })
+      .then((res) => {
+        console.log(res)
+      })
+    })
+  });
+
   }
 
   render () {
     return (<div>
-      <h1>Item List</h1>
-      <List items={this.state.items}/>
+      < Header />
+      < Container />
     </div>)
   }
 }
