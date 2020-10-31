@@ -14,17 +14,30 @@ const app = express();
 app.use(express.static(__dirname + '/../react-client/dist'));
 
 app.get('/api/restaurants', (req, res) => {
-  console.log(req.query)
+  client.search({
+  latitude: req.query.latitude,
+  longitude: req.query.longitude,
+  radius: 10000,
+  limit: 50
+}).then(response => {
+  res.status(200).send(response.jsonBody.businesses)
+}).catch(e => {
+  console.log(e);
+});
 })
-// client.search({
-//   latitude: 37.553790,
-//   longitude: -121.988900,
-//   radius: 10000,
-//   limit: 50
-// }).then(response => {
-//   response.jsonBody.businesses.map((restaurant => {
-//     console.log(restaurant.name)
-//   }));
+
+app.get('/api/restaurants/:restaurantAlias', (req, res) => {
+  const alias = req.params.restaurantAlias;
+    client.business(alias)
+    .then(response => {
+      res.status(200).send(response.jsonBody)
+     }).catch(e => {
+      res.status(400).send('error')
+     });
+})
+
+// client.business('anikis-sushi-fremont').then(response => {
+//   console.log(response.jsonBody);
 // }).catch(e => {
 //   console.log(e);
 // });

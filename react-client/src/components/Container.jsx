@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div `
-  width: 320px;
+  width: 600px;
   border-radius: 2px;
   background-color: #fff;
   text-align: center;
@@ -13,9 +13,8 @@ const Wrapper = styled.div `
 `;
 
 const FoodImage = styled.div `
-  width: 300px;
-  height: 300px;
-  border: 1px black solid
+  width: 600px;
+  height: 600px;
 `
 
 class Container extends React.Component {
@@ -29,9 +28,11 @@ class Container extends React.Component {
     return (
       <div>
         <Wrapper>
-          <FoodImage>Image goes here</FoodImage>
-          <button>🗑</button>
-          <button>🍽</button>
+          <FoodImage>
+            <img src={this.props.image} alt='Image Unavailable' width="600" height="600"></img>
+          </FoodImage>
+          <button onClick={this.props.reject}>🗑</button>
+          <button onClick={this.props.accept}>🍽</button>
         </Wrapper>
       </div>
     )
