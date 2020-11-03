@@ -25,6 +25,7 @@
     "mysql": "^2.13.0",
     "nodemon": "^2.0.6",
     "react": "^16.8.6",
+    "react-animations": "^1.0.0",
     "react-dom": "^16.8.6",
     "react-modal": "^3.11.2",
     "styled-components": "^5.2.1",
