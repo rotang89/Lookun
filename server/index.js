@@ -17,7 +17,7 @@ app.get('/api/restaurants', (req, res) => {
   latitude: req.query.latitude,
   longitude: req.query.longitude,
   radius: 20000,
-  limit: 20
+  limit: 50
 }).then(response => {
   res.status(200).send(response.jsonBody.businesses)
 }).catch(e => {
@@ -45,6 +45,17 @@ app.post('/api/restaurants/suggestions', (req, res) => {
         res.status(200).send('saved successfully')
       }
     })
+})
+
+app.get('/api/history', (req, res) => {
+  console.log(req.query)
+  pgdb.getSuggestions(req.query.date, (err, data) => {
+    if (err) {
+      res.status(400).send('could not retrieve')
+    } else {
+      res.status(200).send(data)
+    }
+  })
 })
 
 app.listen(3000, function() {

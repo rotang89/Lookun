@@ -29,6 +29,7 @@
     "react-animations": "^1.0.0",
     "react-dom": "^16.8.6",
     "react-modal": "^3.11.2",
+    "react-router-dom": "^5.2.0",
     "styled-components": "^5.2.1",
     "yelp-fusion": "^3.0.0"
   }

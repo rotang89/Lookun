@@ -8,7 +8,7 @@ const Container = styled.div `
   display: grid;
   padding: 12px;
   grid-template-columns: 3fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-auto-rows: minmax(50px, auto);
 `
 
 const Title = styled.div `
@@ -22,6 +22,36 @@ const Label = styled.div `
   border-bottom: 2px solid #64b6ac;
   font-size: 32px
 `
+
+const RestartButton = styled.button `
+  box-shadow:inset 3px 4px 0px 0px #54a3f7;
+	background:linear-gradient(to bottom, #007dc1 5%, #0061a7 100%);
+	background-color:#007dc1;
+	border-radius:10px;
+	border:1px solid #124d77;
+	display:block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:28px;
+	padding:7px 25px;
+	text-decoration:none;
+	text-shadow:0px 1px 2px #154682;
+  width: 50%;
+  margin: 20px auto;
+  &: hover {
+    background:linear-gradient(to bottom, #0061a7 5%, #007dc1 100%);
+	background-color:#0061a7;
+	background-color:#408c99;
+  };
+  &: active {
+    outline: none
+  };
+  &:focus {
+    outline: none !important;
+    }
+`
+
 const BookButton = styled.button `
 box-shadow: 3px 4px 0px 0px #8a2a21;
 	background:linear-gradient(to bottom, #c62d1f 5%, #f24437 100%);
@@ -44,10 +74,9 @@ box-shadow: 3px 4px 0px 0px #8a2a21;
     outline: none !important;
     }
 `
-const RestaurantInfo = styled.div `
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  grid-template-rows: 50px 50px 50px 50px 50px;
+const AdditionalInfo = styled.div `
+    font-size: 16px;
+    border: gray solid 1px;
 `
 
 const Restaurant = styled.div `
@@ -101,11 +130,26 @@ class SuggestionsModal extends React.Component {
   render() {
     console.log(this.props.top3)
     const moreInfo0 = this.state.restaurantInfo[0] ?
-    <RestaurantInfo>
+    <AdditionalInfo>
       <div>{this.state.restaurantInfo[0].location.display_address.join(', ')}</div>
       <div>price: {this.state.restaurantInfo[0].price}</div>
-      <div>rating: {this.state.restaurantInfo[0].rating}</div>
-    </RestaurantInfo> : <div></div>
+      <div>rating: {this.state.restaurantInfo[0].rating}/5</div>
+      <div>{this.state.restaurantInfo[0].hours[0].is_open_now ? 'OPEN' : 'CLOSED'}</div>
+    </AdditionalInfo> : <div></div>
+    const moreInfo1 = this.state.restaurantInfo[1] ?
+    <AdditionalInfo>
+      <div>{this.state.restaurantInfo[1].location.display_address.join(', ')}</div>
+      <div>price: {this.state.restaurantInfo[1].price}</div>
+      <div>rating: {this.state.restaurantInfo[1].rating}/5</div>
+      <div>{this.state.restaurantInfo[1].hours[0].is_open_now ? 'OPEN' : 'CLOSED'}</div>
+    </AdditionalInfo> : <div></div>
+    const moreInfo2 = this.state.restaurantInfo[2] ?
+    <AdditionalInfo>
+      <div>{this.state.restaurantInfo[2].location.display_address.join(', ')}</div>
+      <div>price: {this.state.restaurantInfo[2].price}</div>
+      <div>rating: {this.state.restaurantInfo[2].rating}/5</div>
+      <div>{this.state.restaurantInfo[2].hours[0].is_open_now ? 'OPEN' : 'CLOSED'}</div>
+    </AdditionalInfo> : <div></div>
 
     return (
       <div>
@@ -117,7 +161,7 @@ class SuggestionsModal extends React.Component {
               backgroundColor: 'rgba(0, 0, 0, .9)'
             },
             content: {
-              margin: '150px auto',
+              margin: '150px auto 500px auto',
               borderRadius: '5px',
               width: '744px',
               padding: '0px'
@@ -130,12 +174,12 @@ class SuggestionsModal extends React.Component {
             <Label>Web Page</Label>
             <Restaurant>{this.props.top3[0].name} {moreInfo0}</Restaurant>
             <BookButton value={0} onClick={this.moreInfo.bind(this)}>{this.state.restaurantInfo[0] ? 'Less Info' : 'More Info'}</BookButton>
-            <Restaurant>{this.props.top3[1].name}</Restaurant>
+            <Restaurant>{this.props.top3[1].name} {moreInfo1}</Restaurant>
             <BookButton value={1} onClick={this.moreInfo.bind(this)}>{this.state.restaurantInfo[1] ? 'Less Info' : 'More Info'}</BookButton>
-            <Restaurant>{this.props.top3[2].name}</Restaurant>
+            <Restaurant>{this.props.top3[2].name} {moreInfo2}</Restaurant>
             <BookButton value={2} onClick={this.moreInfo.bind(this)}>{this.state.restaurantInfo[2] ? 'Less Info' : 'More Info'}</BookButton>
           </Container>
-          <button onClick={this.complete.bind(this)}>Restart</button>
+          <RestartButton onClick={this.complete.bind(this)}>Restart</RestartButton>
         </Modal>
       </div>
     )

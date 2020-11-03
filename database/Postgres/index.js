@@ -18,6 +18,28 @@ const addSuggestions = function(suggestion, callback) {
     })
 }
 
+const Seed = function(suggestion, callback) {
+  pgdb.query(`INSERT INTO suggestion_history (alias, restaurant, score, date) VALUES ('${suggestion.alias}', '${suggestion.name.replace(/'/g, `''`)}', ${suggestion.score}, '${suggestion.date}')`, (err, res) => {
+      if (err) {
+        callback(err)
+      } else {
+        callback(null, res)
+      }
+    })
+}
+
+const getSuggestions = function(date, callback) {
+  pgdb.query(`Select restaurant, SUM(score) from suggestion_history where date > '${date}'  group by restaurant order by sum desc limit 10;`, (err, res) => {
+    if (err) {
+      callback(err)
+    } else {
+      callback(null, res)
+    }
+  })
+}
+
 module.exports = {
-  addSuggestions
+  Seed,
+  addSuggestions,
+  getSuggestions
 }

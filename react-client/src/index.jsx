@@ -5,6 +5,7 @@ import Header from './components/Header.jsx';
 import Container from './components/Container.jsx'
 import styled from 'styled-components';
 import SuggestionsModal from './components/SuggestionsModal.jsx';
+import History from './components/History.jsx'
 
 const Message = styled.div `
   text-align: center;
@@ -191,6 +192,7 @@ class App extends React.Component {
       <Message>You have swiped {this.state.counter} times.</Message>
       {minimumDisplay}
       {suggestionsModal}
+      <History />
     </div>)
   }
 }
