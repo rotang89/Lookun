@@ -8,7 +8,7 @@ const Container = styled.div `
   display: grid;
   padding: 12px;
   grid-template-columns: 3fr 1fr;
-  grid-template-rows: 50px 50px 50px 50px 50px;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
 `
 
 const Title = styled.div `
@@ -44,6 +44,11 @@ box-shadow: 3px 4px 0px 0px #8a2a21;
     outline: none !important;
     }
 `
+const RestaurantInfo = styled.div `
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: 50px 50px 50px 50px 50px;
+`
 
 const Restaurant = styled.div `
   font-size: 24px;
@@ -55,6 +60,9 @@ const Restaurant = styled.div `
 class SuggestionsModal extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      restaurantInfo: [false, false, false]
+    }
   }
 
   complete() {
@@ -71,8 +79,34 @@ class SuggestionsModal extends React.Component {
     })
   }
 
+  moreInfo(e) {
+    const index = e.target.value;
+    axios.get(`/api/restaurants/${this.props.top3[index].alias}`)
+    .then((res) => {
+      const info = this.state.restaurantInfo;
+      if (!info[index]) {
+        info[index] = res.data;
+        this.setState({
+          restaurantInfo: info
+        })
+      } else {
+        info[index] = false;
+        this.setState({
+          restaurantInfo: info
+        })
+      }
+    })
+  }
+
   render() {
     console.log(this.props.top3)
+    const moreInfo0 = this.state.restaurantInfo[0] ?
+    <RestaurantInfo>
+      <div>{this.state.restaurantInfo[0].location.display_address.join(', ')}</div>
+      <div>price: {this.state.restaurantInfo[0].price}</div>
+      <div>rating: {this.state.restaurantInfo[0].rating}</div>
+    </RestaurantInfo> : <div></div>
+
     return (
       <div>
         <Modal
@@ -94,12 +128,12 @@ class SuggestionsModal extends React.Component {
             <Title>TOP 3</Title>
             <Label>Restaurant</Label>
             <Label>Web Page</Label>
-            <Restaurant>{this.props.top3[0].name}</Restaurant>
-            <BookButton>More Info</BookButton>
+            <Restaurant>{this.props.top3[0].name} {moreInfo0}</Restaurant>
+            <BookButton value={0} onClick={this.moreInfo.bind(this)}>{this.state.restaurantInfo[0] ? 'Less Info' : 'More Info'}</BookButton>
             <Restaurant>{this.props.top3[1].name}</Restaurant>
-            <BookButton>More Info</BookButton>
+            <BookButton value={1} onClick={this.moreInfo.bind(this)}>{this.state.restaurantInfo[1] ? 'Less Info' : 'More Info'}</BookButton>
             <Restaurant>{this.props.top3[2].name}</Restaurant>
-            <BookButton>More Info</BookButton>
+            <BookButton value={2} onClick={this.moreInfo.bind(this)}>{this.state.restaurantInfo[2] ? 'Less Info' : 'More Info'}</BookButton>
           </Container>
           <button onClick={this.complete.bind(this)}>Restart</button>
         </Modal>

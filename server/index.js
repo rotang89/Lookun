@@ -16,8 +16,8 @@ app.get('/api/restaurants', (req, res) => {
   client.search({
   latitude: req.query.latitude,
   longitude: req.query.longitude,
-  radius: 10000,
-  limit: 5
+  radius: 20000,
+  limit: 20
 }).then(response => {
   res.status(200).send(response.jsonBody.businesses)
 }).catch(e => {
@@ -37,13 +37,15 @@ app.get('/api/restaurants/:restaurantAlias', (req, res) => {
 })
 
 app.post('/api/restaurants/suggestions', (req, res) => {
-  console.log(req.body)
+  pgdb.addSuggestions(req.body.suggestions, (err, data) => {
+      if (err) {
+        console.log(err)
+        res.status(400).send('could not save')
+      } else {
+        res.status(200).send('saved successfully')
+      }
+    })
 })
-// client.business('anikis-sushi-fremont').then(response => {
-//   console.log(response.jsonBody);
-// }).catch(e => {
-//   console.log(e);
-// });
 
 app.listen(3000, function() {
   console.log('listening on port 3000!');

@@ -24,6 +24,7 @@
     "mongoose": "^4.8.6",
     "mysql": "^2.13.0",
     "nodemon": "^2.0.6",
+    "pg": "^8.4.2",
     "react": "^16.8.6",
     "react-animations": "^1.0.0",
     "react-dom": "^16.8.6",

@@ -121,7 +121,7 @@ class App extends React.Component {
         }
       }
 
-      results.price+=(restaurant.price.length)
+      results.price+=(restaurant.price ? restaurant.price.length : 0)
     }
 
     //analyze left swipes
@@ -155,7 +155,7 @@ class App extends React.Component {
         }
       }
       //price score
-      let priceScore = 4 - Math.abs(restaurant.price.length - results.price);
+      let priceScore = 0 - Math.abs((restaurant.price ? restaurant.price.length : 0) - results.price);
 
       let restaurantScore = {}
       restaurantScore.score = categoryScore + priceScore
