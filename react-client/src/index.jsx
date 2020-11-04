@@ -6,6 +6,8 @@ import Container from './components/Container.jsx'
 import styled from 'styled-components';
 import SuggestionsModal from './components/SuggestionsModal.jsx';
 import History from './components/History.jsx'
+import Search from './components/Search.jsx'
+import keydown from 'react-keydown';
 
 const Message = styled.div `
   text-align: center;
@@ -13,7 +15,6 @@ const Message = styled.div `
   font-size: 25px;
   margin: 15px auto;
 `;
-
 const SuggestionButton = styled.button `
   margin: 0 auto;
   background:linear-gradient(to bottom, #599bb3 5%, #64b6ac 100%);
@@ -33,6 +34,20 @@ const SuggestionButton = styled.button `
     outline: none !important;
     }
 `
+const HistoryWrapper = styled.div `
+position: absolute;
+display: inline-block;
+right: 20px;
+top: 100px;
+`
+
+const SearchWrapper = styled.div `
+position: absolute;
+display: inline-block;
+left: 20px;
+top: 100px;
+`
+
 
 class App extends React.Component {
   constructor(props) {
@@ -46,9 +61,13 @@ class App extends React.Component {
       acceptedData: [],
       rejectedData: [],
       suggestionsModal: false,
-      suggestions: []
+      suggestions: [],
+      showHistory: false,
+      showSearch: false
     }
   }
+
+
 
   componentDidMount() {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -181,18 +200,31 @@ class App extends React.Component {
     })
   }
 
+  toggleHistory() {
+    this.setState({
+      showHistory: !this.state.showHistory
+    })
+  }
+
+  toggleSearch() {
+    this.setState({
+      showSearch: !this.state.showSearch
+    })
+  }
+
   render () {
     const suggestionsModal= this.state.suggestionsModal ? <SuggestionsModal restart={this.restart.bind(this)} top3={this.state.suggestions.slice(0, 3)}/> : <div></div>
     const minimumDisplay = this.state.counter < 1 ? <Message>We require a minimum of 5 swipes</Message> : <SuggestionButton onClick={this.calculate.bind(this)}>Calculate Suggestions</SuggestionButton>
     return (
     <div style={{textAlign: "center"}}>
-      < Header />
+      < Header toggleSearch={this.toggleSearch.bind(this)} toggleHistory={this.toggleHistory.bind(this)}/>
+      {this.state.showHistory ? <HistoryWrapper><History /></HistoryWrapper> : <div></div>}
+      {this.state.showSearch ? <SearchWrapper><Search latitude={this.state.latitude} longitude={this.state.longitude}/></SearchWrapper> : <div></div>}
       < Container image={this.state.restaurants.length !== 0 ? this.state.restaurants[this.state.current].image_url : 'https://media2.giphy.com/media/2uJ0EhZnMAMDe/giphy.gif'} accept={this.handleAccept.bind(this)} reject={this.handleReject.bind(this)}/>
       <br></br>
       <Message>You have swiped {this.state.counter} times.</Message>
       {minimumDisplay}
       {suggestionsModal}
-      <History />
     </div>)
   }
 }

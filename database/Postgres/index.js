@@ -29,7 +29,7 @@ const Seed = function(suggestion, callback) {
 }
 
 const getSuggestions = function(date, callback) {
-  pgdb.query(`Select restaurant, SUM(score) from suggestion_history where date > '${date}'  group by restaurant order by sum desc limit 10;`, (err, res) => {
+  pgdb.query(`Select restaurant, alias, SUM(score) from suggestion_history where date > '${date}'  group by restaurant, alias order by sum desc limit 10;`, (err, res) => {
     if (err) {
       callback(err)
     } else {

@@ -34,9 +34,9 @@ class Header extends React.Component {
     return (
       <div>
         <HeaderBar>
-          <Icon src='https://cdn3.iconfinder.com/data/icons/food-delivery-1-2/100/a-20-512.png'></Icon>
+          <Icon src='https://cdn3.iconfinder.com/data/icons/food-delivery-1-2/100/a-20-512.png' onClick={this.props.toggleSearch}></Icon>
           <Title>Whats For Dinner</Title>
-          <Icon src='https://www.greenecountyfoundation.org/wp-content/uploads/2019/09/Profile-Icon.png'></Icon>
+          <Icon src='https://www.greenecountyfoundation.org/wp-content/uploads/2019/09/Profile-Icon.png' onClick={this.props.toggleHistory}></Icon>
         </HeaderBar>
       </div>
     )

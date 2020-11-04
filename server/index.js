@@ -48,7 +48,6 @@ app.post('/api/restaurants/suggestions', (req, res) => {
 })
 
 app.get('/api/history', (req, res) => {
-  console.log(req.query)
   pgdb.getSuggestions(req.query.date, (err, data) => {
     if (err) {
       res.status(400).send('could not retrieve')
@@ -56,6 +55,30 @@ app.get('/api/history', (req, res) => {
       res.status(200).send(data)
     }
   })
+})
+
+app.get('/api/search', (req, res) => {
+  const data = req.query;
+  if(data.term === '') {
+    delete data.term
+  }
+  if(data.location === '') {
+    delete data.location
+  } else {
+    delete data.latitude;
+    delete data.longitude
+  }
+  delete data.top10;
+  delete data.restaurantInfo
+  data.limit = 10
+  console.log(data)
+  client.search(data)
+  .then(response => {
+    res.status(200).send(response.jsonBody.businesses)
+  })
+  .catch(e => {
+    console.log(e);
+  });
 })
 
 app.listen(3000, function() {

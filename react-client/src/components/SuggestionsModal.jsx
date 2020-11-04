@@ -16,6 +16,7 @@ const Title = styled.div `
   text-align: center;
   font-family: Helvetica;
   font-size: 36px;
+  border-bottom: 2px solid #64b6ac;
 `
 
 const Label = styled.div `
@@ -81,7 +82,7 @@ const AdditionalInfo = styled.div `
 
 const Restaurant = styled.div `
   font-size: 24px;
-  font-family: Helventica;
+  font-family: Helvetica;
   align-self: stretch;
   margin: auto 10px;
 `
@@ -128,7 +129,6 @@ class SuggestionsModal extends React.Component {
   }
 
   render() {
-    console.log(this.props.top3)
     const moreInfo0 = this.state.restaurantInfo[0] ?
     <AdditionalInfo>
       <div>{this.state.restaurantInfo[0].location.display_address.join(', ')}</div>
@@ -163,15 +163,14 @@ class SuggestionsModal extends React.Component {
             content: {
               margin: '150px auto 500px auto',
               borderRadius: '5px',
-              width: '744px',
+              width: '600px',
               padding: '0px'
             }
           }}
         >
           <Container>
-            <Title>TOP 3</Title>
-            <Label>Restaurant</Label>
-            <Label>Web Page</Label>
+            <Title>TOP 3 Restaurants</Title>
+
             <Restaurant>{this.props.top3[0].name} {moreInfo0}</Restaurant>
             <BookButton value={0} onClick={this.moreInfo.bind(this)}>{this.state.restaurantInfo[0] ? 'Less Info' : 'More Info'}</BookButton>
             <Restaurant>{this.props.top3[1].name} {moreInfo1}</Restaurant>
