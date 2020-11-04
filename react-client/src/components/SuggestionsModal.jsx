@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import Modal from 'react-modal';
 import axios from 'axios';
+import SimpleMap from './Map.jsx'
+
 
 const Container = styled.div `
   font-family: Helvetica;
@@ -10,7 +12,6 @@ const Container = styled.div `
   grid-template-columns: 3fr 1fr;
   grid-auto-rows: minmax(50px, auto);
 `
-
 const Title = styled.div `
   grid-column: 1 / span 2;
   text-align: center;
@@ -18,12 +19,10 @@ const Title = styled.div `
   font-size: 36px;
   border-bottom: 2px solid #64b6ac;
 `
-
 const Label = styled.div `
   border-bottom: 2px solid #64b6ac;
   font-size: 32px
 `
-
 const RestartButton = styled.button `
   box-shadow:inset 3px 4px 0px 0px #54a3f7;
 	background:linear-gradient(to bottom, #007dc1 5%, #0061a7 100%);
@@ -52,7 +51,6 @@ const RestartButton = styled.button `
     outline: none !important;
     }
 `
-
 const BookButton = styled.button `
 box-shadow: 3px 4px 0px 0px #8a2a21;
 	background:linear-gradient(to bottom, #c62d1f 5%, #f24437 100%);
@@ -79,7 +77,6 @@ const AdditionalInfo = styled.div `
     font-size: 16px;
     border: gray solid 1px;
 `
-
 const Restaurant = styled.div `
   font-size: 24px;
   font-family: Helvetica;
@@ -161,7 +158,7 @@ class SuggestionsModal extends React.Component {
               backgroundColor: 'rgba(0, 0, 0, .9)'
             },
             content: {
-              margin: '150px auto 500px auto',
+              margin: '100px auto 100px auto',
               borderRadius: '5px',
               width: '600px',
               padding: '0px'
@@ -179,6 +176,7 @@ class SuggestionsModal extends React.Component {
             <BookButton value={2} onClick={this.moreInfo.bind(this)}>{this.state.restaurantInfo[2] ? 'Less Info' : 'More Info'}</BookButton>
           </Container>
           <RestartButton onClick={this.complete.bind(this)}>Restart</RestartButton>
+          <SimpleMap latitude={this.props.latitude} longitude={this.props.longitude} restaurants={this.props.top3}/>
         </Modal>
       </div>
     )

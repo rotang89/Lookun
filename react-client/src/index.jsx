@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import SuggestionsModal from './components/SuggestionsModal.jsx';
 import History from './components/History.jsx'
 import Search from './components/Search.jsx'
-import keydown from 'react-keydown';
 
 const Message = styled.div `
   text-align: center;
@@ -47,7 +46,6 @@ display: inline-block;
 left: 20px;
 top: 100px;
 `
-
 
 class App extends React.Component {
   constructor(props) {
@@ -126,7 +124,7 @@ class App extends React.Component {
   calculate() {
     const results = {
       categoryList: {},
-      price: 0
+      price: 0,
     };
     const right = this.state.acceptedData;
     const left = this.state.rejectedData;
@@ -181,6 +179,8 @@ class App extends React.Component {
       restaurantScore.score = categoryScore + priceScore
       restaurantScore.name = restaurant.name
       restaurantScore.alias = restaurant.alias
+      restaurantScore.lat = restaurant.coordinates.latitude
+      restaurantScore.long = restaurant.coordinates.longitude
       data.push(restaurantScore)
     }
     data.sort((a, b) => b.score - a.score)
@@ -213,7 +213,7 @@ class App extends React.Component {
   }
 
   render () {
-    const suggestionsModal= this.state.suggestionsModal ? <SuggestionsModal restart={this.restart.bind(this)} top3={this.state.suggestions.slice(0, 3)}/> : <div></div>
+    const suggestionsModal= this.state.suggestionsModal ? <SuggestionsModal latitude={this.state.latitude} longitude={this.state.longitude} restart={this.restart.bind(this)} top3={this.state.suggestions.slice(0, 3)}/> : <div></div>
     const minimumDisplay = this.state.counter < 1 ? <Message>We require a minimum of 5 swipes</Message> : <SuggestionButton onClick={this.calculate.bind(this)}>Calculate Suggestions</SuggestionButton>
     return (
     <div style={{textAlign: "center"}}>

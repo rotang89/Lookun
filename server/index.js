@@ -16,7 +16,7 @@ app.get('/api/restaurants', (req, res) => {
   client.search({
   latitude: req.query.latitude,
   longitude: req.query.longitude,
-  radius: 20000,
+  radius: 10000,
   limit: 50
 }).then(response => {
   res.status(200).send(response.jsonBody.businesses)
