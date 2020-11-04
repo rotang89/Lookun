@@ -214,7 +214,7 @@ class App extends React.Component {
 
   render () {
     const suggestionsModal= this.state.suggestionsModal ? <SuggestionsModal latitude={this.state.latitude} longitude={this.state.longitude} restart={this.restart.bind(this)} top3={this.state.suggestions.slice(0, 3)}/> : <div></div>
-    const minimumDisplay = this.state.counter < 1 ? <Message>We require a minimum of 5 swipes</Message> : <SuggestionButton onClick={this.calculate.bind(this)}>Calculate Suggestions</SuggestionButton>
+    const minimumDisplay = this.state.counter < 5 ? <Message>More Swipes Required</Message> : <SuggestionButton onClick={this.calculate.bind(this)}>Calculate Suggestions</SuggestionButton>
     return (
     <div style={{textAlign: "center"}}>
       < Header toggleSearch={this.toggleSearch.bind(this)} toggleHistory={this.toggleHistory.bind(this)}/>
