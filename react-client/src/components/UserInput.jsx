@@ -102,7 +102,7 @@ class UserInput extends React.Component{
     return(
       <Wrapper>
         <Name>
-          Search
+          Filter
           <Input onChange={this.handleSearch.bind(this)}></Input>
           Radius (miles)
           <Input type='number' min='1' max='25' onChange={this.handleRadius.bind(this)}></Input>
