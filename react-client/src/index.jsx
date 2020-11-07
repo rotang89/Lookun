@@ -5,12 +5,14 @@ import Header from './components/Header.jsx';
 import Container from './components/Container.jsx'
 import styled from 'styled-components';
 import SuggestionsModal from './components/SuggestionsModal.jsx';
-import History from './components/History.jsx'
-import Search from './components/Search.jsx'
+import History from './components/History.jsx';
+import Search from './components/Search.jsx';
+import AdvancedContainer from './components/AdvancedContainer.jsx';
+import UserInput from './components/UserInput.jsx';
 
 const Message = styled.div `
   text-align: center;
-  color: #64b6ac;
+  color: #d63230;
   font-size: 25px;
   margin: 15px auto;
 `;
@@ -61,34 +63,16 @@ class App extends React.Component {
       suggestionsModal: false,
       suggestions: [],
       showHistory: false,
-      showSearch: false
+      showSearch: false,
+      query: []
     }
   }
-
-
 
   componentDidMount() {
     navigator.geolocation.getCurrentPosition((position) => {
     this.setState({
       latitude: position.coords.latitude,
       longitude: position.coords.longitude
-    }, () => {
-      axios.get('/api/restaurants', {
-        params: {
-          latitude: this.state.latitude,
-          longitude: this.state.longitude
-        }
-      })
-      .then((res) => {
-        this.setState({
-          restaurants: res.data
-        }, () => {
-          this.setState({
-            //set current to random restaurant in list
-            current: Math.floor(Math.random() * this.state.restaurants.length)
-          })
-        })
-      })
     })
   });
 }
@@ -154,7 +138,7 @@ class App extends React.Component {
 
     }
     results.price = results.price / (right.length)
-    console.log(results, this.state.restaurants)
+    console.log(results, this.state.acceptedData, this.state.rejectedData)
     this.findSuggestions(results)
     this.setState({
       suggestionsModal: true
@@ -181,6 +165,7 @@ class App extends React.Component {
       restaurantScore.alias = restaurant.alias
       restaurantScore.lat = restaurant.coordinates.latitude
       restaurantScore.long = restaurant.coordinates.longitude
+      restaurantScore.url = restaurant.url
       data.push(restaurantScore)
     }
     data.sort((a, b) => b.score - a.score)
@@ -212,17 +197,43 @@ class App extends React.Component {
     })
   }
 
+  SearchInput(input) {
+    axios.get('/api/restaurants', {
+      params: {
+        latitude: this.state.latitude,
+        longitude: this.state.longitude,
+        radius: input.radius,
+        term: input.search,
+        price: input.price
+      }
+    })
+    .then((res) => {
+      this.setState({
+        restaurants: res.data,
+        acceptedData: [],
+        rejectedData: []
+      })
+    })
+  }
+
   render () {
     const suggestionsModal= this.state.suggestionsModal ? <SuggestionsModal latitude={this.state.latitude} longitude={this.state.longitude} restart={this.restart.bind(this)} top3={this.state.suggestions.slice(0, 3)}/> : <div></div>
-    const minimumDisplay = this.state.counter < 5 ? <Message>More Swipes Required</Message> : <SuggestionButton onClick={this.calculate.bind(this)}>Calculate Suggestions</SuggestionButton>
+    const minimumDisplay = this.state.counter < 5 ? <Message></Message> : <SuggestionButton onClick={this.calculate.bind(this)}>Calculate Suggestions</SuggestionButton>
+    const TinderContainer = this.state.restaurants.length===0 ? <div></div> : <AdvancedContainer images={this.state.restaurants.map(restaurant => {
+      const data = {}
+      data.url = restaurant.image_url
+      data.name = restaurant.name
+      return (
+        data
+      )
+    })}/>
     return (
     <div style={{textAlign: "center"}}>
       < Header toggleSearch={this.toggleSearch.bind(this)} toggleHistory={this.toggleHistory.bind(this)}/>
       {this.state.showHistory ? <HistoryWrapper><History /></HistoryWrapper> : <div></div>}
       {this.state.showSearch ? <SearchWrapper><Search latitude={this.state.latitude} longitude={this.state.longitude}/></SearchWrapper> : <div></div>}
-      < Container image={this.state.restaurants.length !== 0 ? this.state.restaurants[this.state.current].image_url : 'https://media2.giphy.com/media/2uJ0EhZnMAMDe/giphy.gif'} accept={this.handleAccept.bind(this)} reject={this.handleReject.bind(this)}/>
-      <br></br>
-      <Message>You have swiped {this.state.counter} times.</Message>
+      < UserInput searchInput={this.SearchInput.bind(this)}/>
+      < Container image={this.state.restaurants.length !== 0 ? this.state.restaurants.map(restaurant => restaurant.image_url) : ['https://i.pinimg.com/originals/50/7e/92/507e92e1d92210aac1a7130c8757a0dd.gif']} accept={this.handleAccept.bind(this)} reject={this.handleReject.bind(this)} current={this.state.current}/>
       {minimumDisplay}
       {suggestionsModal}
     </div>)

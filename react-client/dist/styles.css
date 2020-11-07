@@ -1,5 +1,13 @@
 body {
-  background-color: #fad4c0;
+  background: rgb(110,181,223);
+  background: -moz-radial-gradient(circle, rgba(110,181,223,1) 0%, rgba(185,157,30,1) 100%);
+  background: -webkit-radial-gradient(circle, rgba(110,181,223,1) 0%, rgba(185,157,30,1) 100%);
+  background: radial-gradient(circle, rgba(110,181,223,1) 0%, rgba(185,157,30,1) 100%);
   padding: 0px;
   margin: 0px
+}
+
+
+.swipe {
+  position: absolute;
 }

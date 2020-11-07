@@ -63,7 +63,6 @@ const Restaurant = styled.div `
   margin: auto 10px;
   cursor: pointer;
 `
-
 const AdditionalInfo = styled.div `
     font-size: 16px;
     border: gray solid 1px;
@@ -105,13 +104,18 @@ class Search extends React.Component {
     let data = this.state;
     data.longitude = this.props.longitude
     data.latitude = this.props.latitude
+    console.log(data)
     axios.get('/api/search', {
       params: data
     })
     .then(res => {
       this.setState({
         top10: res.data,
+        restaurantInfo: [false, false, false, false, false, false, false, false, false, false]
       })
+    })
+    .catch(err => {
+      console.log('error')
     })
   }
 
@@ -151,8 +155,7 @@ class Search extends React.Component {
           </PriceSelect>
         <SearchButton onClick={this.handleSearch.bind(this)}>Search</SearchButton>
 
-        {this.state.top10.map((restaurant) => {
-          const index = this.state.top10.findIndex((element) => element.alias === restaurant.alias)
+        {this.state.top10.map((restaurant, index) => {
             return (
               <Restaurant>
                 <div onClick={this.moreInfo.bind(this)} key={restaurant.name}>{restaurant.name}</div>

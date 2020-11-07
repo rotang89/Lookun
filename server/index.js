@@ -13,12 +13,16 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + '/../react-client/dist'));
 
 app.get('/api/restaurants', (req, res) => {
+  console.log(req.query)
   client.search({
   latitude: req.query.latitude,
   longitude: req.query.longitude,
-  radius: 10000,
+  radius: req.query.radius,
+  price: req.query.price,
+  term: req.query.term,
   limit: 50
 }).then(response => {
+  response.jsonBody.businesses.sort(() => Math.random() - 0.5);
   res.status(200).send(response.jsonBody.businesses)
 }).catch(e => {
   console.log(e);
@@ -70,8 +74,8 @@ app.get('/api/search', (req, res) => {
   }
   delete data.top10;
   delete data.restaurantInfo
-  data.limit = 10
   console.log(data)
+  data.limit = 10
   client.search(data)
   .then(response => {
     res.status(200).send(response.jsonBody.businesses)

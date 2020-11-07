@@ -13,7 +13,7 @@ class SimpleMap extends Component {
     console.log(this.props)
     return (
       // Important! Always set the container height explicitly
-      <div style={{ height: '600px', width: '600px' }}>
+      <div style={{ height: '800px', width: '800px' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: google_key}}
           defaultCenter={{
@@ -23,9 +23,10 @@ class SimpleMap extends Component {
           defaultZoom={13}
         >
 
-        <Marker1 lat={this.props.restaurants[0].lat} lng={this.props.restaurants[0].long} />
-        <Marker2 lat={this.props.restaurants[1].lat} lng={this.props.restaurants[1].long} />
-        <Marker3 lat={this.props.restaurants[2].lat} lng={this.props.restaurants[2].long} />
+        {this.props.restaurants.map(restaurant => (
+          <Marker url={restaurant.url} lat={restaurant.lat} lng={restaurant.long} name={restaurant.name} />
+        ))}
+
 
           <Current
             lat={this.props.latitude}
@@ -37,16 +38,35 @@ class SimpleMap extends Component {
   }
 }
 
-const Marker1 = props => {
-  return <img src="https://image.flaticon.com/icons/png/512/1532/1532718.png" width="30" height="30"></img>
-}
+class Marker extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state={
+      showDetails: false
+    }
+  }
 
-const Marker2 = props => {
-  return <img src="https://image.flaticon.com/icons/png/512/1532/1532718.png" width="30" height="30"></img>
-}
+  toggleDetails() {
+    this.setState({
+      showDetails: !this.state.showDetails
+    })
+    console.log(this.props.url)
+  }
 
-const Marker3 = props => {
-  return <img src="https://image.flaticon.com/icons/png/512/1532/1532718.png" width="30" height="30"></img>
+  render() {
+  const name = this.state.showDetails ? <div>{this.props.name}</div> : <div></div>
+    return (
+    <a href={this.props.url} target="_blank">
+      <img
+        onMouseEnter={this.toggleDetails.bind(this)}
+        onMouseLeave={this.toggleDetails.bind(this)}
+        src="https://image.flaticon.com/icons/png/512/1532/1532718.png"
+        width="30"
+        height="30">
+      </img>
+      {name}
+    </a>
+  )}
 }
 
 const Current = props => {

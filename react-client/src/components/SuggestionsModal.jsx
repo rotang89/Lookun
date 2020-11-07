@@ -158,15 +158,15 @@ class SuggestionsModal extends React.Component {
               backgroundColor: 'rgba(0, 0, 0, .9)'
             },
             content: {
-              margin: '100px auto 100px auto',
+              margin: '120px auto 100px auto',
               borderRadius: '5px',
-              width: '600px',
+              width: '800px',
               padding: '0px'
             }
           }}
         >
           <Container>
-            <Title>TOP 3 Restaurants</Title>
+            <Title>TOP 3 Nearby Restaurants</Title>
 
             <Restaurant>{this.props.top3[0].name} {moreInfo0}</Restaurant>
             <BookButton value={0} onClick={this.moreInfo.bind(this)}>{this.state.restaurantInfo[0] ? 'Less Info' : 'More Info'}</BookButton>
@@ -175,7 +175,7 @@ class SuggestionsModal extends React.Component {
             <Restaurant>{this.props.top3[2].name} {moreInfo2}</Restaurant>
             <BookButton value={2} onClick={this.moreInfo.bind(this)}>{this.state.restaurantInfo[2] ? 'Less Info' : 'More Info'}</BookButton>
           </Container>
-          <RestartButton onClick={this.complete.bind(this)}>Restart</RestartButton>
+          <RestartButton onClick={this.complete.bind(this)}>COMPLETE</RestartButton>
           <SimpleMap latitude={this.props.latitude} longitude={this.props.longitude} restaurants={this.props.top3}/>
         </Modal>
       </div>
