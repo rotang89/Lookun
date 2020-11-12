@@ -62,8 +62,6 @@ class App extends React.Component {
       rejectedData: [],
       suggestionsModal: false,
       suggestions: [],
-      showHistory: false,
-      showSearch: false,
       query: []
     }
   }
@@ -138,7 +136,6 @@ class App extends React.Component {
 
     }
     results.price = results.price / (right.length)
-    console.log(results, this.state.acceptedData, this.state.rejectedData)
     this.findSuggestions(results)
     this.setState({
       suggestionsModal: true
@@ -229,9 +226,6 @@ class App extends React.Component {
     })}/>
     return (
     <div style={{textAlign: "center"}}>
-      < Header toggleSearch={this.toggleSearch.bind(this)} toggleHistory={this.toggleHistory.bind(this)}/>
-      {this.state.showHistory ? <HistoryWrapper><History /></HistoryWrapper> : <div></div>}
-      {this.state.showSearch ? <SearchWrapper><Search latitude={this.state.latitude} longitude={this.state.longitude}/></SearchWrapper> : <div></div>}
       < UserInput searchInput={this.SearchInput.bind(this)}/>
       < Container image={this.state.restaurants.length !== 0 ? this.state.restaurants.map(restaurant => restaurant.image_url) : ['https://i.pinimg.com/originals/50/7e/92/507e92e1d92210aac1a7130c8757a0dd.gif']} accept={this.handleAccept.bind(this)} reject={this.handleReject.bind(this)} current={this.state.current}/>
       {minimumDisplay}
@@ -240,4 +234,5 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('app'));
+export default App
+

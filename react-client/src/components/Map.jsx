@@ -2,15 +2,12 @@ import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import {google_key} from '../../../Google_API.js';
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
-
 class SimpleMap extends Component {
   constructor(props) {
     super(props)
   }
 
   render() {
-    console.log(this.props)
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '800px', width: '800px' }}>
@@ -50,7 +47,6 @@ class Marker extends React.Component {
     this.setState({
       showDetails: !this.state.showDetails
     })
-    console.log(this.props.url)
   }
 
   render() {

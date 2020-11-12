@@ -74,25 +74,9 @@ class Container extends React.Component {
   }
 
   handleChoice(e) {
-    console.log(e.target.value)
     this.swipe(e.target.value)
   }
 
-  /* render() {
-    return (
-      <div>
-        <Wrapper className='cardContainer'>
-        <TinderCard className='swipe' onSwipe={this.onSwipe.bind(this)} onCardLeftScreen={() => this.onCardLeftScreen('fooBar')} preventSwipe={['up', 'down']}>
-          <FoodImage>
-            <img src={this.props.image[this.props.current]} alt='Image Unavailable' width="600" height="600"></img>
-          </FoodImage>
-        </TinderCard>
-          <ChoiceButton onClick={this.props.reject}>🗑</ChoiceButton>
-          <ChoiceButton onClick={this.props.accept}>🍽</ChoiceButton>
-        </Wrapper>
-      </div>
-    )
-  } */
 
   render() {
     return (

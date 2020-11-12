@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const Wrapper = styled.div `
 width: 350px;
-margin: 0 auto;
+margin: 100px auto;
 border: black solid 1px;
 background-color: #b09e99
 `
@@ -99,7 +99,7 @@ class History extends React.Component {
   render() {
 
     return (
-      <div>
+      <div style={{textAlign: "center"}}>
         <Wrapper>
         <Title>
           <b>YOUR TOP 10 SUGGESTIONS</b>

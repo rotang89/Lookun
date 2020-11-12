@@ -2,7 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const yelp = require('yelp-fusion');
 const {yelpKey} = require('../Yelp_API.js');
-const pgdb = require('../database/Postgres')
+const pgdb = require('../database/Postgres');
+const path = require('path')
 
 const client = yelp.client(yelpKey)
 
@@ -11,6 +12,32 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/../react-client/dist'));
+
+const a = []
+
+app.get('/api/heatmap', (req, res) => {
+  client.search({
+  latitude: req.query.latitude,
+  longitude: req.query.longitude,
+  radius: req.query.radius,
+  limit: 50
+})
+.then(response1 => {
+  client.search({
+    latitude: req.query.latitude,
+    longitude: req.query.longitude,
+    radius: req.query.radius,
+    limit: 50,
+    offset: 50
+  })
+  .then(response2 =>{
+    res.status(200).send([...response1.jsonBody.businesses, ...response2.jsonBody.businesses])
+  })
+})
+.catch(e => {
+  console.log(e);
+});
+})
 
 app.get('/api/restaurants', (req, res) => {
   console.log(req.query)
@@ -74,14 +101,14 @@ app.get('/api/search', (req, res) => {
   }
   delete data.top10;
   delete data.restaurantInfo
-  console.log(data)
   data.limit = 10
+  console.log(data)
   client.search(data)
   .then(response => {
     res.status(200).send(response.jsonBody.businesses)
   })
   .catch(e => {
-    console.log(e);
+    console.log(e)
   });
 })
 

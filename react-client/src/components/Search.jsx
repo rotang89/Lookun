@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const Wrapper = styled.div `
 width: 350px;
-margin: 0 auto;
+margin: 100px auto;
 border: black solid 1px;
 background-color: #b09e99
 `
@@ -78,9 +78,20 @@ class Search extends React.Component {
       location: '',
       price: 2,
       top10: [],
+      latitude: '',
+      longitude: '',
       restaurantInfo: [false, false, false, false, false, false, false, false, false, false]
     }
   }
+
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition((position) => {
+    this.setState({
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude
+    })
+  });
+}
 
   handleName(e) {
     this.setState({
@@ -102,8 +113,6 @@ class Search extends React.Component {
 
   handleSearch() {
     let data = this.state;
-    data.longitude = this.props.longitude
-    data.latitude = this.props.latitude
     console.log(data)
     axios.get('/api/search', {
       params: data
@@ -142,7 +151,7 @@ class Search extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{textAlign: "center"}}>
       <Wrapper>
        <Title>SEARCH RESTAURANTS</Title>
         <Form type="text" placeholder="Restaurant Name" onChange={this.handleName.bind(this)}></Form>
